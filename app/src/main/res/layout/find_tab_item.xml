@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_45"
+    android:layout_height="@dimen/dp_45"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@drawable/icon_find_tab"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="@dimen/dp_40"
+        tools:src="@drawable/icon_oneday"
+        android:scaleType="fitXY"
+        android:layout_centerInParent="true"
+        android:layout_height="@dimen/dp_40"/>
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="wrap_content"
+        tools:text="18"
+        android:paddingTop="5dp"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

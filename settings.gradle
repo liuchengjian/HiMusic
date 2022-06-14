@@ -1,0 +1,6 @@
+rootProject.name = "HiMusic"
+include ':app'
+include ':lib_common'
+include ':lib_network'
+include ':lib_navannotation'
+include ':lib_navcompiler'

@@ -1,0 +1,14 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">嗨音乐</string>
+    <string name="nav_select_find" tools:ignore="ExtraTranslation">发现</string>
+    <string name="nav_select_podcast" tools:ignore="ExtraTranslation">播客</string>
+    <string name="nav_select_mine" tools:ignore="ExtraTranslation">我的</string>
+    <string name="nav_select_follow" tools:ignore="ExtraTranslation">关注</string>
+    <string name="nav_select_yuncun" tools:ignore="ExtraTranslation">云村</string>
+    <string name="login">登录</string>
+    <string name="input_phone">手机号</string>
+    <string name="input_pwd">密码</string>
+    <string name="forget_pwd">忘记密码？</string>
+    <string name="register">注册</string>
+
+</resources>

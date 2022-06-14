@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+
+    <tab
+        activeColor="@color/red"
+        icon="@drawable/icon_bottombar_find"
+        id="@+id/tab_find"
+        title="@string/nav_select_find"/>
+    <tab
+        activeColor="@color/red"
+        icon="@drawable/icon_bottombar_podcast"
+        id="@+id/tab_podcast"
+        title="@string/nav_select_podcast"/>
+    <tab
+        activeColor="@color/red"
+        icon="@drawable/icon_bottombar_mine"
+        id="@+id/tab_mine"
+        title="@string/nav_select_mine"/>
+    <tab
+        activeColor="@color/red"
+        icon="@drawable/icon_bottombar_follow"
+        id="@+id/tab_follow"
+        title="@string/nav_select_follow"/>
+    <tab
+        activeColor="@color/red"
+        icon="@drawable/icon_bottombar_yuncun"
+        id="@+id/tab_yuncun"
+        title="@string/nav_select_yuncun"/>
+
+
+</tabs>

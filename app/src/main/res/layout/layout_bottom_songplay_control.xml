@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom_controller"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_alignParentBottom="true"
+        android:background="#CCffffff">
+
+        <TextView
+            android:id="@+id/tv_gap"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#f0f0f0" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_gap">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_music"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/iv_bottom_controller"
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:src="@drawable/ic_bottom_controller" />
+            <com.liu.himusic.ui.widget.CircleProgressBar
+                android:id="@+id/loading_song"
+                android:layout_width="28dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@+id/iv_bottom_controller"
+                android:layout_height="28dp">
+            </com.liu.himusic.ui.widget.CircleProgressBar>
+            <ImageView
+                android:id="@+id/iv_bottom_play"
+                android:layout_width="@dimen/dp_27"
+                android:layout_height="@dimen/dp_27"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/iv_bottom_controller"
+                android:src="@drawable/shape_play" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

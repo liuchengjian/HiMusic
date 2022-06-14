@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:id="@+id/container"
+    android:background="#9900"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/banner_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+         />
+
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:id="@+id/title"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/app_name"
+        android:textColor="@color/white"
+        tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/tag_hot"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="2dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="627热度"
+        android:textColor="@color/color_gray"
+        tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/pl"
+        app:layout_constraintTop_toBottomOf="@+id/tag_hot"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="2dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="评论"
+        android:textColor="@color/color_gray"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,15 @@
+package com.liucj.lib_network.bean;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class Cursor implements Serializable {
+
+    /**
+     * offset : 7
+     * blockCodeOrderList : ["HOMEPAGE_BANNER","HOMEPAGE_NEW_USER_WELCOME","HOMEPAGE_BLOCK_PLAYLIST_RCMD","HOMEPAGE_BLOCK_STYLE_RCMD","HOMEPAGE_BLOCK_HOT_TOPIC","HOMEPAGE_MUSIC_MLOG","HOMEPAGE_BLOCK_MGC_PLAYLIST","HOMEPAGE_VOICELIST_RCMD","HOMEPAGE_BLOCK_OFFICIAL_PLAYLIST","HOMEPAGE_BLOCK_LISTEN_LIVE","HOMEPAGE_BLOCK_YUNCUN_PRODUCED","HOMEPAGE_BLOCK_NEW_ALBUM_NEW_SONG","HOMEPAGE_BLOCK_TOPLIST","HOMEPAGE_MUSIC_CALENDAR","HOMEPAGE_PODCAST24","HOMEPAGE_BLOCK_VIDEO_PLAYLIST"]
+     */
+
+    public int offset;
+    public List<String> blockCodeOrderList;
+}

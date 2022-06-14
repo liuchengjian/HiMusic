@@ -1,0 +1,54 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_white">
+
+        <!--存放content主内存区-->
+        <LinearLayout
+            android:fitsSystemWindows="true"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/nav_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <com.liu.himusic.ui.widget.BottomSongPlayBar
+                android:id="@+id/bottom_song_playbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"/>
+            <com.roughike.bottombar.BottomBar
+                android:id="@+id/bottom_bar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_gravity="bottom"
+                app:bb_tabXmlResource="@xml/bottom_bar_tabs" />
+        </LinearLayout>
+        <!-- 存放侧滑菜单区-->
+        <RelativeLayout
+            android:id="@+id/left_drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginEnd="25dp"
+            android:background="@color/color_gray">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="侧滑内容展示区" />
+
+        </RelativeLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>
