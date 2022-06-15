@@ -25,6 +25,8 @@ public class BlockBean implements Serializable {
     public Object extInfo;
     public UiElementBean uiElement;
 
+    public List<FindBall> findBall;
+
     public List<ExtInfoBean> extInfoList (){
         Gson gson = new Gson();
         if(extInfo==null){

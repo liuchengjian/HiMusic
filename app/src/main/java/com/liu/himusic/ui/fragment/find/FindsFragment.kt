@@ -87,10 +87,15 @@ class FindsFragment : BaseHomeFragment(), OnRefreshListener, OnLoadMoreListener 
                     return
                 }
                 findBallList = data
-//                if (adapter!!.getItem(0) !is HeaderTabItem && adapter!!.getItem(1) !is HeaderTabItem) {
-//                    val index = if (adapter!!.getItem(0) is BannerNewItem) 1 else 0
-//                    adapter!!.addItemAt(index, HeaderTabItem(data!!), true)
-//                }
+              val tabBlock =   BlockBean()
+                tabBlock.showType = "TAP"
+                tabBlock.findBall = data
+                if(adapter!!.getItem(0).showType.equals( "BANNER")
+                    &&!adapter!!.getItem(1).showType.equals( "TAP")){
+                     adapter!!.addData(1,tabBlock)
+                }else if(!adapter!!.getItem(0).showType.equals( "BANNER") &&!adapter!!.getItem(0).showType.equals( "TAP")){
+                    adapter!!.addData(0,tabBlock)
+                }
             }
         })
     }
