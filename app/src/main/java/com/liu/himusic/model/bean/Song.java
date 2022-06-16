@@ -129,7 +129,7 @@ public class Song implements Serializable {
         public int br;
         public int fid;
         public int size;
-        public int vd;
+        public long vd;
         public int sr;
     }
 
