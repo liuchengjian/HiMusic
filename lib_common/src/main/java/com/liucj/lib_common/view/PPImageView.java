@@ -1,6 +1,8 @@
 package com.liucj.lib_common.view;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -16,9 +18,14 @@ import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.liucj.lib_common.R;
 import com.liucj.lib_common.utils.PixUtils;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -131,5 +138,22 @@ public class PPImageView extends AppCompatImageView {
                         imageView.setBackground(resource);
                     }
                 });
+    }
+    @BindingAdapter(value = {"blur_url"})
+    public static void setBlurImageUrl(ImageView imageView, String blurUrl) {
+        Glide.with(imageView)
+                .load(blurUrl)
+                .apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 12)))
+                .transition(new DrawableTransitionOptions().crossFade(1500))
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                       Drawable current = resource.getCurrent();
+                       //有最重要的一点一定要加一层灰色遮罩
+                       current.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+                        imageView.setBackground(resource);
+                    }
+                });
+
     }
 }

@@ -26,13 +26,14 @@
         android:roundIcon="@drawable/icon_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.PlayListActivity"></activity>
+        <activity android:name=".ui.activity.MusicPlayerActivity"></activity>
+        <activity android:name=".ui.activity.PlayListActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".SplashActivity"
             android:exported="true">

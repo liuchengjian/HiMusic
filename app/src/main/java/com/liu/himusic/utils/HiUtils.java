@@ -32,4 +32,40 @@ public class HiUtils {
         }
         return timeStr;
     }
+
+    /**
+     * Android 音乐播放器应用里，读出的音乐时长为 long 类型以毫秒数为单位，例如：将 234736 转化为分钟和秒应为 03:55 （包含四舍五入）
+     * @param duration 音乐时长
+     * @return
+     */
+    public static String songTimeParse(long duration) {
+        String time = "" ;
+        long minute = duration / 60000 ;
+        long seconds = duration % 60000 ;
+        long second = Math.round((float)seconds/1000) ;
+        if( minute < 10 ){
+            time += "0" ;
+        }
+        time += minute+":" ;
+        if( second < 10 ){
+            time += "0" ;
+        }
+        time += second ;
+        return time ;
+    }
+
+    /**
+     * 毫秒转分秒
+     */
+    public static String formatTime(long time) {
+        String min = (time / (1000 * 60)) + "";
+        String second = (time % (1000 * 60) / 1000) + "";
+        if (min.length() < 2) {
+            min = 0 + min;
+        }
+        if (second.length() < 2) {
+            second = 0 + second;
+        }
+        return min + ":" + second;
+    }
 }

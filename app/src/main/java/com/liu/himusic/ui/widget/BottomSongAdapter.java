@@ -1,6 +1,7 @@
 package com.liu.himusic.ui.widget;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.liu.himusic.R;
+import com.liu.himusic.model.Const;
+import com.liu.himusic.ui.activity.MusicPlayerActivity;
+import com.liu.himusic.ui.adapter.MusicPagerAdapter;
 import com.lzx.starrysky.SongInfo;
 
 import java.util.List;
@@ -50,16 +54,21 @@ public class BottomSongAdapter extends RecyclerView.Adapter<BottomSongAdapter.So
                     ivPlay.setImageResource(R.drawable.shape_stop);
             }
         }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
+            intent.putExtra(Const.SONG_INFO, currentSongInfo);
+            holder.itemView.getContext().startActivity(intent);
+        });
         holder.leftView.setOnClickListener(v -> {
-//            Intent intent = new Intent(mContext, SongActivity.class);
-//            intent.putExtra(SongActivity.SONG_INFO, currentSongInfo);
-//            mContext.startActivity(intent);
+            Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
+            intent.putExtra(Const.SONG_INFO, currentSongInfo);
+            holder.itemView.getContext().startActivity(intent);
         });
 
         holder.llSongInfo.setOnClickListener(v -> {
-//            Intent intent = new Intent(mContext, SongActivity.class);
-//            intent.putExtra(SongActivity.SONG_INFO, currentSongInfo);
-//            mContext.startActivity(intent);
+            Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
+            intent.putExtra(Const.SONG_INFO, currentSongInfo);
+            holder.itemView.getContext().startActivity(intent);
         });
 
     }

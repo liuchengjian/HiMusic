@@ -17,6 +17,7 @@ import com.liucj.lib_network.cache.CacheManager;
 import com.lzx.starrysky.OnPlayProgressListener;
 import com.lzx.starrysky.SongInfo;
 import com.lzx.starrysky.StarrySky;
+import com.lzx.starrysky.control.RepeatMode;
 import com.lzx.starrysky.manager.PlaybackStage;
 
 
@@ -32,12 +33,6 @@ import java.util.regex.Pattern;
  */
 public class SongPlayManager {
     private static final String TAG = "SongPlayManager";
-    //列表循环
-    public static final int MODE_LIST_LOOP_PLAY = 0x001;
-    //单曲循环
-    public static final int MODE_SINGLE_LOOP_PLAY = 0x002;
-    //随机播放
-    public static final int MODE_RANDOM = 0x003;
     //播放模式
     private int mode;
     //播放列表
@@ -54,12 +49,17 @@ public class SongPlayManager {
 //    private HashMap<Long, SongDetailBean> songDetailMap;
 
     private Application context;
+    public static final int REPEAT_MODE_NONE = RepeatMode.REPEAT_MODE_NONE;//顺序播放
+    public static final int REPEAT_MODE_ONE = RepeatMode.REPEAT_MODE_ONE;//单曲播放
+    public static final int REPEAT_MODE_SHUFFLE = RepeatMode.REPEAT_MODE_SHUFFLE;//随机播放
+    public static final int REPEAT_MODE_REVERSE = RepeatMode.REPEAT_MODE_REVERSE;//倒序播放
+
 
     private SongPlayManager() {
         musicCanPlayMap = new HashMap<>();
         musicCanPlayMap.clear();
         songList.clear();
-        mode = MODE_LIST_LOOP_PLAY;
+        mode = StarrySky.with().getRepeatMode().getRepeatMode();
     }
 
     public static SongPlayManager getInstance() {
@@ -256,7 +256,7 @@ public class SongPlayManager {
             //弹出Toast
             Log.d(TAG, "music can not play");
             ToastUtils.show("本歌曲不能播放，可能是没有版权Or你不是尊贵的VIP用户");
-            if (mode != MODE_SINGLE_LOOP_PLAY) {
+            if (mode != REPEAT_MODE_ONE) {
                 playNextMusic();
             } else {
                 LiveDataBus.get().with("stop_music").postValue(songList.get(currentSongIndex));
@@ -295,7 +295,7 @@ public class SongPlayManager {
         Log.d(TAG, "playNextMusic");
         cancelPlay();
         switch (mode) {
-            case MODE_LIST_LOOP_PLAY:
+            case REPEAT_MODE_NONE:
                 if (currentSongIndex < songList.size()) {
                     //列表播完了的话，继续播放，并且要把index置为0，最近听过的歌曲调成列表第一个
                     if (currentSongIndex == songList.size() - 1) {
@@ -308,10 +308,10 @@ public class SongPlayManager {
                     Log.w(TAG, "currentSongIndex >= songListSize");
                 }
                 break;
-            case MODE_SINGLE_LOOP_PLAY:
+            case REPEAT_MODE_ONE:
                 playMusic(songList.get(currentSongIndex).getSongId());
                 break;
-            case MODE_RANDOM:
+            case REPEAT_MODE_SHUFFLE:
                 Random ra = new Random();
                 int random = ra.nextInt(songList.size() - 1);
                 while (random == currentSongIndex) {
@@ -330,7 +330,7 @@ public class SongPlayManager {
         Log.d(TAG, "playPreMusic");
         cancelPlay();
         switch (mode) {
-            case MODE_LIST_LOOP_PLAY:
+            case REPEAT_MODE_NONE:
                 if (currentSongIndex < songList.size()) {
                     if (currentSongIndex == 0) {
                         currentSongIndex = songList.size() - 1;
@@ -342,10 +342,10 @@ public class SongPlayManager {
                     Log.w(TAG, "currentSongIndex >= songListSize");
                 }
                 break;
-            case MODE_SINGLE_LOOP_PLAY:
+            case REPEAT_MODE_ONE:
                 playMusic(songList.get(currentSongIndex).getSongId());
                 break;
-            case MODE_RANDOM:
+            case REPEAT_MODE_SHUFFLE:
                 Random ra = new Random();
                 int random = ra.nextInt(songList.size() - 1);
                 while (random == currentSongIndex) {
@@ -472,6 +472,37 @@ public class SongPlayManager {
      */
     public List<SongInfo> getSongList() {
         return songList;
+    }
+
+    public SongInfo getCurrentSong() {
+        return songList.get(currentSongIndex);
+    }
+
+    public SongInfo getNowPlayingSongInfo() {
+        return StarrySky.with().getNowPlayingSongInfo();
+    }
+
+    /**
+     * 设置播放模式
+     *
+     * @param repeatMode
+     */
+    public void setPlayMode(int repeatMode) {
+        StarrySky.with().setRepeatMode(repeatMode, true);
+    }
+
+    public void playOrPause() {
+        if (!isPlaying()) {
+            Log.d(TAG, "playMusic");
+            clickBottomContrllerPlay(songList.get(currentSongIndex));
+        } else {
+            Log.d(TAG, "pauseMusic");
+            pauseMusic();
+        }
+    }
+
+    public static int getPlayMode() {
+        return StarrySky.with().getRepeatMode().getRepeatMode();
     }
 
 
