@@ -84,37 +84,49 @@ public class BottomSongPlayBar extends RelativeLayout {
             @Override
             public void onChanged(SongInfo bean) {
                 Log.d(TAG, "MusicStartEvent :");
+                ivPlay.setImageResource(R.drawable.shape_stop);
+                BottomSongBarLeftView leftView = getLeftView();
+                if (leftView != null) {
+                    leftView.start();
+                }
+
+            }
+        });
+        LiveDataBus.get().with("pause_music").observe((LifecycleOwner) mContext, new Observer<SongInfo>() {
+            @Override
+            public void onChanged(SongInfo bean) {
+                Log.d(TAG, "onPauseMusicEvent");
+                ivPlay.setImageResource(R.drawable.shape_play);
+                BottomSongBarLeftView leftView = getLeftView();
+                if (leftView != null) {
+                    leftView.paused();
+                }
+            }
+        });
+        LiveDataBus.get().with("add_music").observe((LifecycleOwner) mContext, new Observer<SongInfo>() {
+            @Override
+            public void onChanged(SongInfo bean) {
                 updateList();
                 if (adapter != null) {
                     adapter.notifyDataSetChanged();
                     ivPlay.setImageResource(R.drawable.shape_stop);
                     int currentSongIndex = SongPlayManager.getInstance().getCurrentSongIndex();
                     rvMusic.scrollToPosition(currentSongIndex);
-                    View currentView = snapHelper.findSnapView(layoutManager);
-                    if (currentView != null) {
-                        BottomSongBarLeftView leftView = currentView.findViewById(R.id.left_view);
-                        if (leftView != null) {
-                            leftView.start();
-                        }
-                    }
                 }
+            }
+        });
+    }
 
+    public BottomSongBarLeftView getLeftView() {
+        View currentView = snapHelper.findSnapView(layoutManager);
+        if (currentView != null) {
+            BottomSongBarLeftView leftView = currentView.findViewById(R.id.left_view);
+            if (leftView != null) {
+                return leftView;
             }
-        });
-        LiveDataBus.get().with("pause_music").observe((LifecycleOwner) activity, new Observer<SongInfo>() {
-            @Override
-            public void onChanged(SongInfo bean) {
-                Log.d(TAG, "onPauseMusicEvent");
-                ivPlay.setImageResource(R.drawable.shape_play);
-                View currentView = snapHelper.findSnapView(layoutManager);
-                if (currentView != null) {
-                    BottomSongBarLeftView leftView = currentView.findViewById(R.id.left_view);
-                    if (leftView != null) {
-                        leftView.paused();
-                    }
-                }
-            }
-        });
+            return null;
+        }
+        return null;
     }
 
 

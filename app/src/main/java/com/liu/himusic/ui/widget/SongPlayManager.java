@@ -209,6 +209,8 @@ public class SongPlayManager {
             return;
         }
         currentSongIndex = addSong(songInfo);
+        LiveDataBus.get().with("add_music")
+                .postValue(songInfo);
         checkMusic(songInfo.getSongId());
     }
 

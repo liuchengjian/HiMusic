@@ -13,6 +13,7 @@ import com.liu.himusic.model.api.FindApi
 import com.liu.himusic.model.bean.*
 import com.liu.himusic.model.net.*
 import com.liu.himusic.ui.widget.SongPlayManager
+import com.liucj.lib_common.livedata.LiveDataBus
 import com.liucj.lib_common.view.loadUrl
 import com.liucj.lib_network.restful_kt.HiCallback
 import com.liucj.lib_network.restful_kt.HiResponse
@@ -73,7 +74,6 @@ internal class ThreeSongAdapter internal constructor(
             .enqueue(object : HiCallback<BaseModel<List<SongPlayBean>>> {
                 override fun onSuccess(response: HiResponse<BaseModel<List<SongPlayBean>>>) {
                     if (response.code == 200) {
-                        SongPlayManager.getInstance().addSong(songInfo)
                         if (response.data != null) {
                             val song = response.data!!.data[0]
                             if (song!=null) {
