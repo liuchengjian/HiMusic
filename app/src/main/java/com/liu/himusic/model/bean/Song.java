@@ -129,7 +129,7 @@ public class Song implements Serializable {
         public int br;
         public int fid;
         public int size;
-        public long vd;
+        public Object vd;
         public int sr;
     }
 
@@ -145,7 +145,7 @@ public class Song implements Serializable {
         public int br;
         public int fid;
         public int size;
-        public int vd;
+        public Object vd;
         public int sr;
     }
 
@@ -161,7 +161,7 @@ public class Song implements Serializable {
         public int br;
         public int fid;
         public int size;
-        public int vd;
+        public Object vd;
         public int sr;
     }
 
@@ -177,7 +177,7 @@ public class Song implements Serializable {
         public int br;
         public int fid;
         public int size;
-        public int vd;
+        public Object vd;
         public int sr;
     }
 

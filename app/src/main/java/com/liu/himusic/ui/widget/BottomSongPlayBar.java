@@ -18,10 +18,17 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.liu.himusic.R;
+import com.liu.himusic.event.MusicAddEvent;
+import com.liu.himusic.event.MusicPauseEvent;
+import com.liu.himusic.event.MusicStartEvent;
+import com.liu.himusic.event.MusicStopEvent;
 import com.liucj.lib_common.livedata.LiveDataBus;
 import com.lzx.starrysky.OnPlayProgressListener;
 import com.lzx.starrysky.SongInfo;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -117,6 +124,53 @@ public class BottomSongPlayBar extends RelativeLayout {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayMusicEvent(MusicStartEvent event) {
+        Log.d(TAG, "MusicStartEvent :" + event);
+        BottomSongBarLeftView leftView = getLeftView();
+        if (leftView != null) {
+            leftView.start();
+        }
+        ivPlay.setImageResource(R.drawable.shape_stop);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onStopMusicEvent(MusicStopEvent event) {
+        Log.d(TAG, "onStopMusicEvent");
+        updateList();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+            View currentView = snapHelper.findSnapView(layoutManager);
+            if (currentView != null) {
+                BottomSongBarLeftView leftView = currentView.findViewById(R.id.left_view);
+                if (leftView != null) {
+                    leftView.end();
+                }
+            }
+        }
+        ivPlay.setImageResource(R.drawable.shape_play);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPauseMusicEvent(MusicPauseEvent event) {
+        Log.d(TAG, "onPauseMusicEvent");
+        ivPlay.setImageResource(R.drawable.shape_play);
+        BottomSongBarLeftView leftView = getLeftView();
+        if (leftView != null) {
+            leftView.paused();
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAddMusicEvent(MusicAddEvent event) {
+        updateList();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+            int currentSongIndex = SongPlayManager.getInstance().getCurrentSongIndex();
+            rvMusic.scrollToPosition(currentSongIndex);
+        }
+        ivPlay.setImageResource(R.drawable.shape_play);
+    }
+
     public BottomSongBarLeftView getLeftView() {
         View currentView = snapHelper.findSnapView(layoutManager);
         if (currentView != null) {
@@ -131,6 +185,7 @@ public class BottomSongPlayBar extends RelativeLayout {
 
 
     private void initView() {
+        EventBus.getDefault().register(this);
         view = inflate(mContext, R.layout.layout_bottom_songplay_control, this);
         view.setTag("layout/" + "layout_bottom_songplay_control" + "_0");
         mBinding = DataBindingUtil.bind(view);
@@ -245,4 +300,9 @@ public class BottomSongPlayBar extends RelativeLayout {
         view.setVisibility(songList.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        EventBus.getDefault().unregister(this);
+    }
 }

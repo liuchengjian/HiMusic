@@ -16,10 +16,17 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import com.liu.himusic.R;
+import com.liu.himusic.event.MusicPauseEvent;
+import com.liu.himusic.event.MusicStartEvent;
+import com.liu.himusic.event.MusicStopEvent;
 import com.liu.himusic.ui.activity.MusicPlayerActivity;
 import com.liu.himusic.ui.adapter.MusicPagerAdapter;
 import com.liucj.lib_common.livedata.LiveDataBus;
 import com.lzx.starrysky.SongInfo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -55,7 +62,6 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
         super(context, attrs, defStyleAttr);
         mContext = context;
         initData();
-        initEvent((MusicPlayerActivity) context);
     }
 
     @Override
@@ -65,6 +71,7 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
     }
 
     private void initData() {
+        EventBus.getDefault().register(this);
         mQueue = SongPlayManager.getInstance().getSongList();
         mSongInfo = SongPlayManager.getInstance().getCurrentSong();
     }
@@ -106,53 +113,28 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onAudioLoadEvent(AudioLoadEvent event) {
-//        //更新viewpager为load状态
-//        mAudioBean = event.mAudioBean;
-//        showLoadView(true);
-//    }
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onAudioPauseEvent(AudioPauseEvent event) {
-//        //更新activity为暂停状态
-//        showPauseView();
-//    }
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onAudioStartEvent(AudioStartEvent event) {
-//        //更新activity为播放状态
-//        showPlayView();
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayMusicEvent(MusicStartEvent event) {
+        //更新activity为播放状态
+        showPlayView();
+    }
 
-    public void initEvent(Activity activity) {
-        LiveDataBus.get().with("stop_music").observe((LifecycleOwner) mContext, new Observer<SongInfo>() {
-            @Override
-            public void onChanged(SongInfo bean) {
-                //更新activity为暂停状态
-                showPauseView();
-            }
-        });
-        LiveDataBus.get().with("play_music").observe((LifecycleOwner) activity, new Observer<SongInfo>() {
-            @Override
-            public void onChanged(SongInfo bean) {
-                //更新activity为播放状态
-                showPlayView();
-            }
-        });
-        LiveDataBus.get().with("pause_music").observe((LifecycleOwner) activity, new Observer<SongInfo>() {
-            @Override
-            public void onChanged(SongInfo bean) {
-                //更新activity为暂停状态
-                showPauseView();
-            }
-        });
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMusicPauseEvent(MusicPauseEvent event) {
+        //更新activity为暂停状态
+        showPauseView();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMusicStopEvent(MusicStopEvent event) {
+        //更新activity为播放状态
+        showStopView();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-//        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
     private void showLoadView(boolean isSmooth) {
@@ -162,6 +144,10 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
     private void showPauseView() {
         Animator anim = mMusicPagerAdapter.getAnim(mViewPager.getCurrentItem());
         if (anim != null) anim.pause();
+    }
+    private void showStopView() {
+        Animator anim = mMusicPagerAdapter.getAnim(mViewPager.getCurrentItem());
+        if (anim != null) anim.end();
     }
 
     private void showPlayView() {

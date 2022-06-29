@@ -1,6 +1,7 @@
 package com.liu.himusic.ui.widget;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,7 +32,7 @@ public class BottomSongAdapter extends RecyclerView.Adapter<BottomSongAdapter.So
     public ObjectAnimator animator;
     private ImageView ivPlay;
 
-    public BottomSongAdapter(List<SongInfo> mSongs,ImageView ivPlay) {
+    public BottomSongAdapter(List<SongInfo> mSongs, ImageView ivPlay) {
         this.mSongs = mSongs;
         this.ivPlay = ivPlay;
     }
@@ -55,20 +56,14 @@ public class BottomSongAdapter extends RecyclerView.Adapter<BottomSongAdapter.So
             }
         }
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
-            intent.putExtra(Const.SONG_INFO, currentSongInfo);
-            holder.itemView.getContext().startActivity(intent);
+            MusicPlayerActivity.start((Activity) holder.itemView.getContext());
         });
         holder.leftView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
-            intent.putExtra(Const.SONG_INFO, currentSongInfo);
-            holder.itemView.getContext().startActivity(intent);
+            MusicPlayerActivity.start((Activity) holder.itemView.getContext());
         });
-
         holder.llSongInfo.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), MusicPlayerActivity.class);
-            intent.putExtra(Const.SONG_INFO, currentSongInfo);
-            holder.itemView.getContext().startActivity(intent);
+            MusicPlayerActivity.start((Activity) holder.itemView.getContext());
+
         });
 
     }
@@ -77,7 +72,7 @@ public class BottomSongAdapter extends RecyclerView.Adapter<BottomSongAdapter.So
         holder.tvSongName.setText(bean.getSongName());
         holder.tvSongSinger.setText(bean.getArtist());
         if (!TextUtils.isEmpty(bean.getSongCover())) {
-            holder.leftView.getImageView().setImageUrl(bean.getSongCover(),true);
+            holder.leftView.getImageView().setImageUrl(bean.getSongCover(), true);
         }
     }
 

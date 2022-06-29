@@ -8,11 +8,12 @@ import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.hjq.toast.ToastUtils;
+import com.liu.himusic.event.MusicAddEvent;
+import com.liu.himusic.event.MusicPauseEvent;
+import com.liu.himusic.event.MusicStartEvent;
+import com.liu.himusic.event.MusicStopEvent;
 import com.liucj.lib_common.livedata.LiveDataBus;
-import com.liucj.lib_common.utils.PrefUtils;
 import com.liucj.lib_network.cache.CacheManager;
 import com.lzx.starrysky.OnPlayProgressListener;
 import com.lzx.starrysky.SongInfo;
@@ -20,6 +21,8 @@ import com.lzx.starrysky.StarrySky;
 import com.lzx.starrysky.control.RepeatMode;
 import com.lzx.starrysky.manager.PlaybackStage;
 
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,11 +82,12 @@ public class SongPlayManager {
             @Override
             public void onChanged(PlaybackStage playbackStage) {
                 if (playbackStage.getStage().equals(PlaybackStage.PLAYING)) {
-                    LiveDataBus.get().with("play_music").postValue(songList.get(currentSongIndex));
+                    EventBus.getDefault().post(new MusicStartEvent(songList.get(currentSongIndex)));
+//                    LiveDataBus.get().with("play_music").postValue(songList.get(currentSongIndex));
 
                 } else if (playbackStage.getStage().equals(PlaybackStage.PAUSE)) {
-                    LiveDataBus.get().with("pause_music").postValue(songList.get(currentSongIndex));
-
+//                    LiveDataBus.get().with("pause_music").postValue(songList.get(currentSongIndex));
+                    EventBus.getDefault().post(new MusicPauseEvent());
                 }
             }
         });
@@ -93,7 +97,6 @@ public class SongPlayManager {
      * 当前播放器 是否是 空闲状态
      */
     public boolean isIdle() {
-
         return StarrySky.with().isIdle();
     }
 
@@ -209,8 +212,9 @@ public class SongPlayManager {
             return;
         }
         currentSongIndex = addSong(songInfo);
-        LiveDataBus.get().with("add_music")
-                .postValue(songInfo);
+//        LiveDataBus.get().with("add_music")
+//                .postValue(songInfo);
+        EventBus.getDefault().post(new MusicAddEvent(songList.get(currentSongIndex)));
         checkMusic(songInfo.getSongId());
     }
 
@@ -261,8 +265,8 @@ public class SongPlayManager {
             if (mode != REPEAT_MODE_ONE) {
                 playNextMusic();
             } else {
-                LiveDataBus.get().with("stop_music").postValue(songList.get(currentSongIndex));
-//                EventBus.getDefault().post(new StopMusicEvent(songList.get(currentSongIndex)));
+//                LiveDataBus.get().with("stop_music").postValue(songList.get(currentSongIndex));
+                EventBus.getDefault().post(new MusicStopEvent(songList.get(currentSongIndex)));
             }
         }
     }
@@ -501,6 +505,12 @@ public class SongPlayManager {
             Log.d(TAG, "pauseMusic");
             pauseMusic();
         }
+    }
+    public long getPlayingPosition() {
+       return StarrySky.with().getPlayingPosition();
+    }
+    public long getDuration() {
+       return StarrySky.with().getDuration();
     }
 
     public static int getPlayMode() {
