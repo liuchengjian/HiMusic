@@ -1,12 +1,15 @@
 package com.liu.himusic.ui.widget;
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -50,6 +53,8 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
     private SongInfo mSongInfo; //当前播放歌曲
     private List<SongInfo> mQueue; //播放队列
 
+    private ObjectAnimator discAnimation, needleAnimation;//自定义指针和唱盘
+
     public IndictorView(Context context) {
         this(context, null);
     }
@@ -86,6 +91,16 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
         showLoadView(false);
         //要在UI初始化完，否则会多一次listener响应
         mViewPager.addOnPageChangeListener(this);
+        setAnimations();
+    }
+
+    //动画设置
+    private void setAnimations() {
+        needleAnimation = ObjectAnimator.ofFloat(mImageView, "rotation", -20, 0);
+        mImageView.setPivotX(0);
+        mImageView.setPivotY(0);
+        needleAnimation.setDuration(800);
+        needleAnimation.setInterpolator(new LinearInterpolator());
     }
 
     @Override
@@ -96,7 +111,7 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
     @Override
     public void onPageSelected(int position) {
         //指定要播放的position
-        SongPlayManager.getInstance().clickASong(mQueue.get(position));
+        SongPlayManager.getInstance().playMusic(mQueue.get(position).getSongId());
     }
 
     @Override
@@ -106,10 +121,24 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
                 showPlayView();
                 break;
             case ViewPager.SCROLL_STATE_DRAGGING:
+                needleAnimationEnd();
                 showPauseView();
                 break;
             case ViewPager.SCROLL_STATE_SETTLING:
                 break;
+        }
+    }
+
+    public void needleAnimationStart() {
+        if (needleAnimation != null &&!needleAnimation.isStarted()) {
+            needleAnimation.start();
+        }
+    }
+
+    public void needleAnimationEnd() {
+        if (needleAnimation != null) {
+            needleAnimation.reverse();
+            needleAnimation.end();
         }
     }
 
@@ -122,12 +151,14 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMusicPauseEvent(MusicPauseEvent event) {
         //更新activity为暂停状态
+        needleAnimationEnd();
         showPauseView();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMusicStopEvent(MusicStopEvent event) {
-        //更新activity为播放状态
+        //更新activity为停止状态
+        needleAnimationEnd();
         showStopView();
     }
 
@@ -145,12 +176,14 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
         Animator anim = mMusicPagerAdapter.getAnim(mViewPager.getCurrentItem());
         if (anim != null) anim.pause();
     }
+
     private void showStopView() {
         Animator anim = mMusicPagerAdapter.getAnim(mViewPager.getCurrentItem());
         if (anim != null) anim.end();
     }
 
     private void showPlayView() {
+        needleAnimationStart();
         Animator anim = mMusicPagerAdapter.getAnim(mViewPager.getCurrentItem());
         if (anim != null) {
             if (anim.isPaused()) {

@@ -77,13 +77,14 @@ class JzvdStdView : ConstraintLayout {
                     if (response.code == 200) {
                         val rawData = response.rawData
                         val videoPlayUrlBean: VideoPlayUrlBean =
-                            Gson().fromJson(rawData, VideoPlayUrlBean::class.java)
-                        val urlBean: VideoPlayUrlBean.UrlsDTO = videoPlayUrlBean.urls[0]
+                            Gson().fromJson(rawData, VideoPlayUrlBean::class.java) ?: return
+                        val urlBean: VideoPlayUrlBean.UrlsDTO? =
+                            if (videoPlayUrlBean.urls.size > 0) videoPlayUrlBean.urls[0] else null
 
                         val videoBean = resource.mlogBaseData.video
                         if (videoBean != null) {
                             video!!.setUp(
-                                urlBean.url,
+                                urlBean?.url,
                                 "", Jzvd.SCREEN_NORMAL
                             )
                             video!!.posterImageView.scaleType = ImageView.ScaleType.CENTER_CROP

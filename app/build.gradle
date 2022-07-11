@@ -77,7 +77,8 @@ dependencies {
 
     implementation 'com.taishi-y:musicindicator:0.1.0'
 
-    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+//    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+    implementation 'com.github.warkiz.tickseekbar:tickseekbar:0.1.4'
 
 
 }

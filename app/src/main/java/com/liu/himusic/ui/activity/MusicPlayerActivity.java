@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 
+import com.google.android.material.textview.MaterialTextView;
 import com.liu.himusic.R;
 import com.liu.himusic.ui.widget.SongPlayManager;
 import com.liu.himusic.utils.HiUtils;
@@ -28,9 +31,9 @@ import com.liucj.lib_common.utils.StatusBarKt;
 import com.liucj.lib_common.view.PPImageView;
 import com.lzx.starrysky.OnPlayProgressListener;
 import com.lzx.starrysky.SongInfo;
-import com.warkiz.widget.IndicatorSeekBar;
-import com.warkiz.widget.OnSeekChangeListener;
-import com.warkiz.widget.SeekParams;
+import com.warkiz.tickseekbar.OnSeekChangeListener;
+import com.warkiz.tickseekbar.SeekParams;
+import com.warkiz.tickseekbar.TickSeekBar;
 
 /**
  * 播放页面
@@ -42,7 +45,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private ImageView mFavouriteView;
 
-    private IndicatorSeekBar mProgressView;
+    private TickSeekBar mProgressView;
     private TextView mStartTimeView;
     private TextView mTotalTimeView;
 
@@ -58,6 +61,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private SongInfo mSongInfo; //当前正在播放歌曲
     private int mPlayMode;
     private PPImageView mIvBg;
+    private boolean isFirstTouch = false;
+
     public static void start(Activity context) {
         Intent intent = new Intent(context, MusicPlayerActivity.class);
         ActivityCompat.startActivity(context, intent,
@@ -72,7 +77,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             getWindow().setEnterTransition(
                     TransitionInflater.from(this).inflateTransition(R.transition.transition_bottom2top));
         }
-        StatusBarKt.INSTANCE.setStatusBar(this, false,Color.TRANSPARENT,true);
+        StatusBarKt.INSTANCE.setStatusBar(this, false, Color.TRANSPARENT, true);
         setContentView(R.layout.activity_music_player);
         initData();
         initView();
@@ -88,7 +93,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         SongPlayManager.getInstance().init(this);
         mBgView = findViewById(R.id.root_layout);
         mIvBg = findViewById(R.id.mIvBg);
-        mIvBg.setBlurImageUrl(mIvBg,mSongInfo.getSongCover());
+        mIvBg.setBlurImageUrl(mIvBg, mSongInfo.getSongCover());
 //        ImageLoaderManager.getInstance().displayImageForViewGroup(mBgView, mSongInfo.U);
         findViewById(R.id.back_view).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,9 +138,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
         mStartTimeView = findViewById(R.id.start_time_view);
         mTotalTimeView = findViewById(R.id.total_time_view);
         mProgressView = findViewById(R.id.progress_view);
-        mProgressView.setIndicatorTextFormat("HiUtils.formatTime(${PROGRESS})");
-        LinearLayout view1 = (LinearLayout) mProgressView.getIndicator().getTopContentView();
-        view1.getChildAt(0);
         long currentProgress = SongPlayManager.getInstance().getPlayingPosition();
         long duration = SongPlayManager.getInstance().getDuration();
         mStartTimeView.setText(HiUtils.formatTime(currentProgress));
@@ -146,16 +148,21 @@ public class MusicPlayerActivity extends AppCompatActivity {
         mProgressView.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
-
+                Log.e("mProgressView", "onSeeking");
+                mStartTimeView.setText(HiUtils.formatTime(seekParams.progress));
             }
 
             @Override
-            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+            public void onStartTrackingTouch(TickSeekBar seekBar) {
+                Log.e("mProgressView", "onStartTrackingTouch");
+                isFirstTouch = true;
             }
 
             @Override
-            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+            public void onStopTrackingTouch(TickSeekBar seekBar) {
+                Log.e("mProgressView", "onStopTrackingTouch");
                 SongPlayManager.getInstance().seekTo(seekBar.getProgress());
+                isFirstTouch = false;
             }
         });
 
@@ -208,14 +215,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
         SongPlayManager.getInstance().setOnPlayProgressListener(new OnPlayProgressListener() {
             @Override
             public void onPlayProgress(long l, long l1) {
-                mStartTimeView.setText(HiUtils.formatTime(l));
+                if (isFirstTouch) {
+                    return;
+                }
                 mTotalTimeView.setText(HiUtils.formatTime(l1));
+                mStartTimeView.setText(HiUtils.formatTime(l));
                 mProgressView.setMax((int) (l1));
                 mProgressView.setProgress((int) (l));
-
             }
         });
     }
+
     private void showPlayView() {
         mPlayView.setImageResource(R.mipmap.audio_aj6);
     }
