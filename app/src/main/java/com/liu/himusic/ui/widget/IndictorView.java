@@ -94,6 +94,12 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
         setAnimations();
     }
 
+    public void upDataInit(){
+        mQueue = SongPlayManager.getInstance().getSongList();
+        mSongInfo = SongPlayManager.getInstance().getCurrentSong();
+        mMusicPagerAdapter.notifyDataSetChanged();
+    }
+
     //动画设置
     private void setAnimations() {
         needleAnimation = ObjectAnimator.ofFloat(mImageView, "rotation", -20, 0);
@@ -127,6 +133,9 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
             case ViewPager.SCROLL_STATE_SETTLING:
                 break;
         }
+    }
+    public MusicPagerAdapter getMusicPagerAdapter(){
+        return mMusicPagerAdapter;
     }
 
     public void needleAnimationStart() {

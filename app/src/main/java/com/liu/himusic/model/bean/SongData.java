@@ -116,11 +116,11 @@ public class SongData implements Serializable {
         public long id;
         public int size;
         public String extension;
-        public int sr;
-        public int dfsId;
-        public int bitrate;
-        public int playTime;
-        public int volumeDelta;
+        public long sr;
+        public long dfsId;
+        public long bitrate;
+        public long playTime;
+        public long volumeDelta;
     }
 
     public static class HMusicBean implements Serializable {
@@ -138,13 +138,13 @@ public class SongData implements Serializable {
 
         public Object name;
         public long id;
-        public int size;
+        public long size;
         public String extension;
-        public int sr;
-        public int dfsId;
-        public int bitrate;
-        public int playTime;
-        public int volumeDelta;
+        public long sr;
+        public long dfsId;
+        public long bitrate;
+        public long playTime;
+        public long volumeDelta;
     }
 
     public static class MMusicBean implements Serializable {
@@ -162,13 +162,13 @@ public class SongData implements Serializable {
 
         public Object name;
         public long id;
-        public int size;
+        public long size;
         public String extension;
-        public int sr;
-        public int dfsId;
-        public int bitrate;
-        public int playTime;
-        public int volumeDelta;
+        public long sr;
+        public long dfsId;
+        public long bitrate;
+        public long playTime;
+        public long volumeDelta;
     }
 
     public static class LMusicBean implements Serializable {
@@ -186,13 +186,13 @@ public class SongData implements Serializable {
 
         public Object name;
         public long id;
-        public int size;
+        public long size;
         public String extension;
-        public int sr;
-        public int dfsId;
-        public int bitrate;
-        public int playTime;
-        public int volumeDelta;
+        public long sr;
+        public long dfsId;
+        public long bitrate;
+        public long playTime;
+        public long volumeDelta;
     }
 
     public static class BMusicBean implements Serializable {
@@ -210,12 +210,12 @@ public class SongData implements Serializable {
 
         public Object name;
         public long id;
-        public int size;
+        public long size;
         public String extension;
-        public int sr;
-        public int dfsId;
-        public int bitrate;
-        public int playTime;
-        public int volumeDelta;
+        public long sr;
+        public long dfsId;
+        public long bitrate;
+        public long playTime;
+        public long volumeDelta;
     }
 }

@@ -25,6 +25,16 @@ import java.util.List;
 public class MusicPagerAdapter extends PagerAdapter {
 
     private Context mContext;
+    private OnItemClickListener listener;
+
+   public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     /*
      * data
      */
@@ -43,9 +53,17 @@ public class MusicPagerAdapter extends PagerAdapter {
         View rootView = LayoutInflater.from(mContext).inflate(R.layout.indictor_item_view, null);
         PPImageView imageView = rootView.findViewById(R.id.circle_view);
         container.addView(rootView);
-        imageView.setImageUrl(mAudioBeans.get(position).getSongCover(),true);
+        imageView.setImageUrl(mAudioBeans.get(position).getSongCover(), true);
         //只在无动化时创建
         mAnims.put(position, createAnim(rootView)); // 将动画缓存起来
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onItemClick(position);
+                }
+            }
+        });
         return rootView;
     }
 
