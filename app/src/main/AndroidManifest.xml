@@ -26,8 +26,10 @@
         android:roundIcon="@drawable/icon_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.MusicPlayerActivity"
+        <activity android:name=".ui.activity.SongPlayerActivity"
+            android:exported="true"
             />
+        <activity android:name=".ui.activity.MusicPlayerActivity" />
         <activity android:name=".ui.activity.PlayListActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"

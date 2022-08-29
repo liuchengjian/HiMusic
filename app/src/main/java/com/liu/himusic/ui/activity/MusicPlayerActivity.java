@@ -88,8 +88,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     public static void start(Activity context) {
         Intent intent = new Intent(context, MusicPlayerActivity.class);
-        ActivityCompat.startActivity(context, intent,
-                ActivityOptionsCompat.makeSceneTransitionAnimation(context).toBundle());
+//        ActivityCompat.startActivity(context, intent,
+//                ActivityOptionsCompat.makeSceneTransitionAnimation(context).toBundle());
     }
 
     @Override
@@ -266,11 +266,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SongPlayManager.getInstance().playOrPause();
-                if (SongPlayManager.getInstance().isPlaying()) {
-                    showPlayView();
-                } else {
-                    showPauseView();
-                }
             }
         });
         mNextView = findViewById(R.id.next_view);

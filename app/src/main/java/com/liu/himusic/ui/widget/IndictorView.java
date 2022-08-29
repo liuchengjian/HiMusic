@@ -94,7 +94,7 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
         setAnimations();
     }
 
-    public void upDataInit(){
+    public void upDataInit() {
         mQueue = SongPlayManager.getInstance().getSongList();
         mSongInfo = SongPlayManager.getInstance().getCurrentSong();
         mMusicPagerAdapter.notifyDataSetChanged();
@@ -116,8 +116,9 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
 
     @Override
     public void onPageSelected(int position) {
-        //指定要播放的position
-        SongPlayManager.getInstance().playMusic(mQueue.get(position).getSongId());
+        if (listener != null) {
+            listener.onPageSelected(position);
+        }
     }
 
     @Override
@@ -134,12 +135,17 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
                 break;
         }
     }
-    public MusicPagerAdapter getMusicPagerAdapter(){
+
+    public MusicPagerAdapter getMusicPagerAdapter() {
         return mMusicPagerAdapter;
     }
 
+    public ViewPager getViewPager() {
+        return mViewPager;
+    }
+
     public void needleAnimationStart() {
-        if (needleAnimation != null &&!needleAnimation.isStarted()) {
+        if (needleAnimation != null && !needleAnimation.isStarted()) {
             needleAnimation.start();
         }
     }
@@ -181,7 +187,7 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
         mViewPager.setCurrentItem(mQueue.indexOf(mSongInfo), isSmooth);
     }
 
-    private void showPauseView() {
+    public void showPauseView() {
         Animator anim = mMusicPagerAdapter.getAnim(mViewPager.getCurrentItem());
         if (anim != null) anim.pause();
     }
@@ -191,7 +197,7 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
         if (anim != null) anim.end();
     }
 
-    private void showPlayView() {
+    public void showPlayView() {
         needleAnimationStart();
         Animator anim = mMusicPagerAdapter.getAnim(mViewPager.getCurrentItem());
         if (anim != null) {
@@ -201,5 +207,15 @@ public class IndictorView extends RelativeLayout implements ViewPager.OnPageChan
                 anim.start();
             }
         }
+    }
+
+    public interface onPageChangeListener {
+        void onPageSelected(int position);
+    }
+
+    private onPageChangeListener listener;
+
+    public void setOnPageChangeListener(onPageChangeListener listener) {
+        this.listener = listener;
     }
 }

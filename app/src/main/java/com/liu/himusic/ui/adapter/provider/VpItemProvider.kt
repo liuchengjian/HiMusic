@@ -34,9 +34,9 @@ class VpItemProvider : BaseItemProvider<BlockBean>() {
         binding!!.num.text = "1/" + resources.size
 
         var adapter = ImageGalleryAdapter(resources)
-        var banner =  binding!!.banner
+        var banner = binding!!.banner
         banner.setBannerGalleryEffect(20, 20)
-        banner.setAdapter(adapter)
+        banner.setAdapter(adapter, false)
         banner.setDatas(resources)
         banner.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(

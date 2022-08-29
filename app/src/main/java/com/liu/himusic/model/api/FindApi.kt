@@ -34,4 +34,8 @@ interface FindApi {
 
     @GET("song/url")
     fun toSongUrl(@Filed("id") id: String): HiCall<BaseModel<List<SongPlayBean>>>
+
+    @GET("topic/detail")
+    fun topicDetail(@Filed("actid") actid: String): HiCall<TopicDetailBean>
+
 }

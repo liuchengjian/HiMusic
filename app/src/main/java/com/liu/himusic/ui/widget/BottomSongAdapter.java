@@ -2,6 +2,7 @@ package com.liu.himusic.ui.widget;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.liu.himusic.R;
 import com.liu.himusic.model.Const;
 import com.liu.himusic.ui.activity.MusicPlayerActivity;
+import com.liu.himusic.ui.activity.SongPlayerActivity;
 import com.liu.himusic.ui.adapter.MusicPagerAdapter;
 import com.lzx.starrysky.SongInfo;
 
@@ -31,10 +33,12 @@ public class BottomSongAdapter extends RecyclerView.Adapter<BottomSongAdapter.So
     List<SongInfo> mSongs;
     public ObjectAnimator animator;
     private ImageView ivPlay;
+    private Context context;
 
-    public BottomSongAdapter(List<SongInfo> mSongs, ImageView ivPlay) {
+    public BottomSongAdapter(List<SongInfo> mSongs, ImageView ivPlay, Context context) {
         this.mSongs = mSongs;
         this.ivPlay = ivPlay;
+        this.context = context;
     }
 
 
@@ -56,13 +60,13 @@ public class BottomSongAdapter extends RecyclerView.Adapter<BottomSongAdapter.So
             }
         }
         holder.itemView.setOnClickListener(v -> {
-            MusicPlayerActivity.start((Activity) holder.itemView.getContext());
+            SongPlayerActivity.start((Activity) context);
         });
         holder.leftView.setOnClickListener(v -> {
-            MusicPlayerActivity.start((Activity) holder.itemView.getContext());
+            SongPlayerActivity.start((Activity) context);
         });
         holder.llSongInfo.setOnClickListener(v -> {
-            MusicPlayerActivity.start((Activity) holder.itemView.getContext());
+            SongPlayerActivity.start((Activity) context);
 
         });
 

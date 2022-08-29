@@ -11,8 +11,8 @@ import com.liucj.lib_network.restful_kt.annotation.CacheStrategy
  * 代理CallFactory创建出来的call对象，从而实现拦截器的派发动作
  */
 class Scheduler(
-        private val callFactory: HiCall.Factory,
-        private val interceptors: MutableList<HiInterceptor>
+    private val callFactory: HiCall.Factory,
+    private val interceptors: MutableList<HiInterceptor>
 ) {
     fun newCall(request: HiRequest): HiCall<*> {
         val newCall: HiCall<*> = callFactory.newCall(request)
@@ -21,8 +21,8 @@ class Scheduler(
 
 
     internal inner class ProxyCall<T>(
-            private val delegate: HiCall<T>,
-            private val request: HiRequest
+        private val delegate: HiCall<T>,
+        private val request: HiRequest
     ) : HiCall<T> {
         override fun execute(): HiResponse<T> {
             dispatchInterceptor(request, null)
@@ -74,7 +74,7 @@ class Scheduler(
 
         private fun saveCacheIfNeed(response: HiResponse<T>) {
             if (request.cacheStrategy == CacheStrategy.CACHE_FIRST ||
-                    request.cacheStrategy == CacheStrategy.NET_CACHE) {
+                request.cacheStrategy == CacheStrategy.NET_CACHE) {
                 if (response.data != null) {
                     //开启线程，保存缓存
                     HiExecutor.execute(runnable = Runnable {
@@ -105,8 +105,8 @@ class Scheduler(
 
 
         internal inner class InterceptorChain(
-                private val request: HiRequest,
-                private val response: HiResponse<T>?
+            private val request: HiRequest,
+            private val response: HiResponse<T>?
         ) : HiInterceptor.Chain {
             //代表的是 分发的第几个拦截器
             var callIndex: Int = 0

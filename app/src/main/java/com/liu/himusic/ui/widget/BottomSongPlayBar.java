@@ -212,7 +212,7 @@ public class BottomSongPlayBar extends RelativeLayout {
             }
         });
         updateList();
-        adapter = new BottomSongAdapter(songList, ivPlay);
+        adapter = new BottomSongAdapter(songList, ivPlay,mContext);
         rvMusic.setAdapter(adapter);
         rvMusic.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override

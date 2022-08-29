@@ -20,8 +20,8 @@ class RetrofitCallFactory(baseUrl: String) : HiCall.Factory {
 
     init {
         val retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .build()
+            .baseUrl(baseUrl)
+            .build()
 
         apiService = retrofit.create(ApiService::class.java)
         hiConvert = GsonConvert()
@@ -47,8 +47,8 @@ class RetrofitCallFactory(baseUrl: String) : HiCall.Factory {
                 }
 
                 override fun onResponse(
-                        call: Call<ResponseBody>,
-                        response: Response<ResponseBody>
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
                 ) {
                     val response: HiResponse<T> = parseResponse(response)
                     callback.onSuccess(response)
@@ -95,6 +95,7 @@ class RetrofitCallFactory(baseUrl: String) : HiCall.Factory {
             }
 
         }
+
     }
 
     private fun buildRequestBody(request: HiRequest): RequestBody {
@@ -115,8 +116,8 @@ class RetrofitCallFactory(baseUrl: String) : HiCall.Factory {
             requestBody = builder.build()
         } else {
             requestBody = RequestBody.create(
-                    "application/json;utf-8".toMediaTypeOrNull(),
-                    jsonObject.toString()
+                "application/json;utf-8".toMediaTypeOrNull(),
+                jsonObject.toString()
             )
         }
         return requestBody
@@ -127,27 +128,27 @@ class RetrofitCallFactory(baseUrl: String) : HiCall.Factory {
 
         @GET
         fun get(
-                @HeaderMap headers: MutableMap<String, String>?, @Url url: String,
-                @QueryMap(encoded = true) params: MutableMap<String, String>?
+            @HeaderMap headers: MutableMap<String, String>?, @Url url: String,
+            @QueryMap(encoded = true) params: MutableMap<String, String>?
         ): Call<ResponseBody>
 
         @POST
         fun post(
-                @HeaderMap headers: MutableMap<String, String>?, @Url url: String,
-                @Body body: RequestBody?
+            @HeaderMap headers: MutableMap<String, String>?, @Url url: String,
+            @Body body: RequestBody?
         ): Call<ResponseBody>
 
         @PUT
         fun put(
-                @HeaderMap headers: MutableMap<String, String>?,
-                @Url url: String,
-                @Body body: RequestBody?
+            @HeaderMap headers: MutableMap<String, String>?,
+            @Url url: String,
+            @Body body: RequestBody?
         ): Call<ResponseBody>
 
         @DELETE
         fun delete(
-                @HeaderMap headers: MutableMap<String, String>?,
-                @Url url: String,
+            @HeaderMap headers: MutableMap<String, String>?,
+            @Url url: String,
         ): Call<ResponseBody>
     }
 }
