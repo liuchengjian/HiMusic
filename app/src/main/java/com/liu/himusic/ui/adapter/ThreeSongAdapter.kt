@@ -43,10 +43,10 @@ internal class ThreeSongAdapter internal constructor(
             var tvThreeSongDesc: TextView = itemChildThreeSong.findViewById(R.id.tv_three_song_desc)
 
             val resourceExtInfo: ResourceExtInfoBean? = resource!!.resourceExtInfo
-            val song: Song = resourceExtInfo!!.song
+            val song: Song = resourceExtInfo?.song ?: return
             val artist = resourceExtInfo.artists[0]
             ivThreeSong.loadUrl(song.al.picUrl)
-            tvThreeSongTitle.text = song.name
+            tvThreeSongTitle.text = song?.name
             tvThreeSongUser.text = "- " + artist.name
             if (resource.uiElement.subTitle != null && !TextUtils.isEmpty(resource.uiElement.subTitle.title)) {
                 tvThreeSongDesc.visibility = View.VISIBLE
@@ -75,8 +75,8 @@ internal class ThreeSongAdapter internal constructor(
                     if (response.code == 200) {
                         if (response.data != null) {
                             val song = response.data!!.data[0]
-                            if (song!=null) {
-                                songInfo.songUrl =song.url
+                            if (song != null) {
+                                songInfo.songUrl = song.url
                                 songInfo.duration = song.size
                                 SongPlayManager.getInstance().addSongAndPlay(songInfo)
                             }

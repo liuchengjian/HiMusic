@@ -54,9 +54,9 @@ public class FindAdapter extends BaseProviderMultiAdapter<BlockBean> {
             case "HOMEPAGE_SLIDE_PLAYABLE_MLOG":
                 type = HOMEPAGE_SLIDE_PLAYABLE_MLOG;
                 break;
-//            case "SLIDE_PODCAST_VOICE_MORE_TAB":
-//                type = HOMEPAGE_BLOCK_STYLE_RCMD;
-//                break;
+            case "SLIDE_PODCAST_VOICE_MORE_TAB":
+                type = HOMEPAGE_BLOCK_STYLE_RCMD;
+                break;
         }
         if ("HOMEPAGE_BLOCK_STYLE_RCMD".equals(blockBean.blockCode)) {
             type = HOMEPAGE_BLOCK_STYLE_RCMD;
