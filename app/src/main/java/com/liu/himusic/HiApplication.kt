@@ -2,8 +2,18 @@ package com.liu.himusic
 
 import android.app.Application
 import android.view.Gravity
+import com.hjq.http.EasyConfig
+import com.hjq.http.config.IRequestInterceptor
+import com.hjq.http.config.IRequestServer
+import com.hjq.http.model.HttpHeaders
+import com.hjq.http.model.HttpParams
+import com.hjq.http.request.HttpRequest
 import com.hjq.toast.ToastUtils
+import com.liu.himusic.http.model.RequestHandler
+import com.liu.himusic.http.server.ReleaseServer
+import com.liu.himusic.http.server.TestServer
 import com.lzx.starrysky.StarrySky.init
+import okhttp3.OkHttpClient
 
 class HiApplication : Application() {
 
@@ -13,6 +23,7 @@ class HiApplication : Application() {
         ToastUtils.init(this);
         ToastUtils.setGravity(Gravity.TOP)
         init()
+        initService()
     }
 
     private fun init(){
@@ -31,5 +42,39 @@ class HiApplication : Application() {
             //        .setImageLoader(..)                  //配置自定义图片加载器
             //        .setGlobalPlaybackStageListener(..)  //配置全局的播放状态监听器
             .apply()
+    }
+
+    private fun initService(){
+        // 网络请求框架初始化
+
+        // 网络请求框架初始化
+        val server: IRequestServer = if (BuildConfig.DEBUG) {
+            TestServer()
+        } else {
+            ReleaseServer()
+        }
+
+        val okHttpClient = OkHttpClient.Builder()
+            .build()
+
+        EasyConfig.with(okHttpClient) // 是否打印日志
+            //.setLogEnabled(BuildConfig.DEBUG)
+            // 设置服务器配置
+            .setServer(server) // 设置请求处理策略
+            .setHandler(RequestHandler(this)) // 设置请求参数拦截器
+            .setInterceptor(object : IRequestInterceptor {
+                override fun interceptArguments(
+                    httpRequest: HttpRequest<*>,
+                    params: HttpParams,
+                    headers: HttpHeaders
+                ) {
+                    headers.put("timestamp", System.currentTimeMillis().toString())
+                }
+            }) // 设置请求重试次数
+            .setRetryCount(1) // 设置请求重试时间
+//            .setRetryTime(2000) // 添加全局请求参数
+            .addParam("token", "6666666") // 添加全局请求头
+            //.addHeader("date", "20191030")
+            .into()
     }
 }

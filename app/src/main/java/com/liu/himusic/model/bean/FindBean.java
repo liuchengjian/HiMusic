@@ -1,6 +1,5 @@
 package com.liu.himusic.model.bean;
 
-import com.google.gson.internal.LinkedHashTreeMap;
 
 import java.io.Serializable;
 import java.util.List;

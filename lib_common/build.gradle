@@ -130,4 +130,18 @@ dependencies {
     // 日志调试框架：https://github.com/getActivity/Logcat
     debugImplementation 'com.github.getActivity:Logcat:10.3'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7'
+
+    // 网络请求框架：https://github.com/getActivity/EasyHttp
+    api 'com.github.getActivity:EasyHttp:11.2'
+
+    // 标题栏框架：https://github.com/getActivity/TitleBar
+    api 'com.github.getActivity:TitleBar:9.6'
+
+    // Json 解析框架：https://github.com/google/gson
+//    implementation 'com.google.code.gson:gson:2.9.0'
+    // Gson 解析容错：https://github.com/getActivity/GsonFactory
+    api 'com.github.getActivity:GsonFactory:6.2'
+
+    // 腾讯 MMKV：https://github.com/Tencent/MMKV
+    api 'com.tencent:mmkv-static:1.2.12'
 }

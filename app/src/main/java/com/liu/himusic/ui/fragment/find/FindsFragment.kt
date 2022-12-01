@@ -10,18 +10,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.google.gson.Gson
+import com.hjq.http.EasyHttp
+import com.hjq.http.listener.HttpCallback
 import com.liu.himusic.R
 import com.liu.himusic.databinding.FragmentFindBinding
+import com.liu.himusic.http.api.FindHomeApi
+import com.liu.himusic.http.model.HttpData
 import com.liu.himusic.model.bean.*
 import com.liu.himusic.ui.adapter.FindAdapter
 import com.liu.himusic.ui.fragment.BaseHomeFragment
-import com.liu.himusic.ui.fragment.find.item.*
 import com.liu.himusic.ui.viewmodel.FindViewModel
-import com.liucj.lib_common.item.HiAdapter
 import com.liucj.lib_common.item.HiDataItem
 import com.liucj.lib_common.livedata.LiveDataBus
+import com.liucj.lib_common.utils.SPUtil
 import com.liucj.lib_common.view.EmptyView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
@@ -187,7 +188,25 @@ class FindsFragment : BaseHomeFragment(), OnRefreshListener, OnLoadMoreListener 
     }
 
     private fun toFind(refresh: Boolean, cursor: String?) {
-        viewMolder.toFind(refresh, cursor)
+//        viewMolder.toFind(refresh, cursor)
+        EasyHttp.get(this)
+            .api(
+                FindHomeApi().toFind(refresh,cursor, SPUtil.getString("cookie").toString())
+            )
+            .request(object : HttpCallback<HttpData<FindBean>>(this) {
+                override fun onSucceed(result: HttpData<FindBean>) {
+                    if (result.code == 200) {
+                        val bean: FindBean? = result.data
+                        bean?.isRefresh = refresh
+                        LiveDataBus.get().with("FindPage")
+                            .postValue(bean)
+                    } else {
+                        LiveDataBus.get().with("FindPage")
+                            .postValue(null)
+                    }
+                    viewMolder.findBall()
+                }
+            })
     }
 
 }
